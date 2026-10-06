@@ -1,598 +1,765 @@
 <!DOCTYPE html>
 
 <html lang="en">
+
 <head>
+
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-```
-<title>Risk Assessment Result</title>
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
 
-<style>
-    * {
-        box-sizing: border-box;
-        margin: 0;
-        padding: 0;
-    }
+    <title>Risk Assessment Result</title>
 
-    body {
-        font-family: Arial, Helvetica, sans-serif;
-        background: #f5f7fb;
-        color: #1f2937;
-    }
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='style.css') }}">
 
-    /* NAVBAR */
-    .navbar {
-        height: 70px;
-        background: #ffffff;
-        border-bottom: 1px solid #e5e7eb;
+    <style>
 
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
+        /* =====================================================
+           RESULT PAGE
+        ===================================================== */
 
-        padding: 0 8%;
-    }
-
-    .nav-links {
-        display: flex;
-        gap: 32px;
-        margin-left: auto;
-    }
-
-    .nav-links a {
-        text-decoration: none;
-        color: #4b5563;
-        font-size: 15px;
-        font-weight: 500;
-    }
-
-    .nav-links a:hover {
-        color: #111827;
-    }
-
-    /* MAIN CONTAINER */
-    .container {
-        width: 90%;
-        max-width: 1100px;
-        margin: 45px auto;
-    }
-
-    /* PAGE HEADING */
-    .page-heading {
-        text-align: center;
-        margin-bottom: 35px;
-    }
-
-    .page-heading .small-title {
-        color: #6b7280;
-        font-size: 13px;
-        font-weight: 700;
-        letter-spacing: 1.5px;
-        margin-bottom: 10px;
-    }
-
-    .page-heading h1 {
-        font-size: 34px;
-        color: #111827;
-        margin-bottom: 10px;
-    }
-
-    .page-heading p {
-        color: #6b7280;
-        font-size: 15px;
-    }
-
-    /* MAIN RESULT CARD */
-    .result-card {
-        background: #ffffff;
-        border-radius: 18px;
-        padding: 35px;
-        box-shadow: 0 8px 30px rgba(0,0,0,0.07);
-        margin-bottom: 25px;
-        text-align: center;
-    }
-
-    .ai-icon {
-        width: 58px;
-        height: 58px;
-        margin: 0 auto 15px;
-
-        display: flex;
-        align-items: center;
-        justify-content: center;
-
-        border-radius: 50%;
-        background: #eef2ff;
-
-        font-size: 24px;
-        font-weight: bold;
-        color: #4f46e5;
-    }
-
-    .estimated {
-        color: #6b7280;
-        font-size: 14px;
-        margin-bottom: 10px;
-    }
-
-    .risk-level {
-        font-size: 38px;
-        font-weight: 700;
-        color: #4f46e5;
-        margin-bottom: 12px;
-    }
-
-    .confidence {
-        font-size: 15px;
-        color: #4b5563;
-    }
-
-    /* DISCLAIMER */
-    .disclaimer {
-        margin-top: 25px;
-        padding: 16px 20px;
-        background: #fff7ed;
-        border: 1px solid #fed7aa;
-        border-radius: 10px;
-
-        display: flex;
-        align-items: flex-start;
-        gap: 12px;
-
-        text-align: left;
-        color: #7c2d12;
-        font-size: 14px;
-        line-height: 1.6;
-    }
-
-    .warning-icon {
-        font-size: 20px;
-        font-weight: bold;
-    }
-
-    /* ASSESSMENT SECTION */
-    .section-card {
-        background: #ffffff;
-        border-radius: 18px;
-        padding: 30px;
-        box-shadow: 0 8px 30px rgba(0,0,0,0.06);
-        margin-bottom: 25px;
-    }
-
-    .section-title {
-        font-size: 20px;
-        font-weight: 700;
-        color: #111827;
-        margin-bottom: 7px;
-        text-align: center;
-    }
-
-    .section-subtitle {
-        font-size: 14px;
-        color: #6b7280;
-        margin-bottom: 5px;
-        text-align: center;
-    }
-
-    .section-description {
-        font-size: 14px;
-        color: #6b7280;
-        margin-bottom: 25px;
-        text-align: center;
-    }
-
-    /* ASSESSMENT DETAILS */
-    .detail-list {
-        display: flex;
-        flex-direction: column;
-        max-width: 850px;
-        margin: 0 auto;
-    }
-
-    .detail-row {
-        display: grid;
-        grid-template-columns: 1fr 120px 100px;
-        align-items: center;
-
-        padding: 15px 10px;
-        border-bottom: 1px solid #e5e7eb;
-    }
-
-    .detail-row:last-child {
-        border-bottom: none;
-    }
-
-    .detail-name {
-        font-size: 14px;
-        color: #374151;
-        font-weight: 500;
-        text-align: left;
-    }
-
-    .detail-value {
-        font-size: 14px;
-        font-weight: 700;
-        color: #111827;
-        text-align: center;
-    }
-
-    .detail-percentage {
-        font-size: 14px;
-        font-weight: 700;
-        color: #4f46e5;
-        text-align: right;
-    }
-
-    /* BUTTONS */
-    .action-buttons {
-        display: flex;
-        justify-content: center;
-        gap: 15px;
-        margin: 35px 0;
-    }
-
-    .btn {
-        padding: 13px 24px;
-        border-radius: 9px;
-        text-decoration: none;
-        font-size: 14px;
-        font-weight: 600;
-        transition: 0.2s;
-    }
-
-    .btn-primary {
-        background: #4f46e5;
-        color: #ffffff;
-    }
-
-    .btn-primary:hover {
-        background: #4338ca;
-    }
-
-    .btn-secondary {
-        background: #ffffff;
-        color: #374151;
-        border: 1px solid #d1d5db;
-    }
-
-    .btn-secondary:hover {
-        background: #f9fafb;
-    }
-
-    /* FOOTER */
-    footer {
-        text-align: center;
-        padding: 25px 15px;
-        color: #6b7280;
-        font-size: 13px;
-        border-top: 1px solid #e5e7eb;
-        background: #ffffff;
-    }
-
-    footer .footer-title {
-        color: #374151;
-        font-weight: 600;
-        margin-bottom: 6px;
-    }
-
-    /* MOBILE */
-    @media (max-width: 768px) {
-
-        .navbar {
-            padding: 0 5%;
+        .result-page {
+            min-height: 100vh;
+            color: #ffffff;
         }
 
-        .nav-links {
-            gap: 15px;
+
+        /* MAIN CONTAINER */
+
+        .result-container {
+            width: 90%;
+            max-width: 1100px;
+            margin: 45px auto;
         }
 
-        .nav-links a {
+
+        /* PAGE HEADING */
+
+        .page-heading {
+            text-align: center;
+            margin-bottom: 35px;
+        }
+
+        .page-heading .small-title {
+            color: #a78bfa;
             font-size: 13px;
-        }
-
-        .container {
-            width: 92%;
-            margin: 30px auto;
+            font-weight: 700;
+            letter-spacing: 1.5px;
+            margin-bottom: 10px;
         }
 
         .page-heading h1 {
-            font-size: 27px;
+            font-size: 34px;
+            color: #ffffff;
+            margin-bottom: 10px;
         }
+
+        .page-heading p {
+            color: #b8b8b8;
+            font-size: 15px;
+        }
+
+
+        /* MAIN RESULT CARD */
 
         .result-card {
-            padding: 25px 20px;
+            background: rgba(20, 20, 25, 0.82);
+            border: 1px solid rgba(255, 255, 255, 0.10);
+            border-radius: 18px;
+            padding: 35px;
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.35);
+            margin-bottom: 25px;
+            text-align: center;
+            backdrop-filter: blur(10px);
         }
 
-        .section-card {
-            padding: 25px 20px;
+
+        .ai-icon {
+            width: 58px;
+            height: 58px;
+            margin: 0 auto 15px;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            border-radius: 50%;
+            background: rgba(79, 70, 229, 0.20);
+
+            font-size: 24px;
+            font-weight: bold;
+            color: #a78bfa;
         }
+
+
+        .estimated {
+            color: #b8b8b8;
+            font-size: 14px;
+            margin-bottom: 10px;
+        }
+
 
         .risk-level {
-            font-size: 31px;
+            font-size: 38px;
+            font-weight: 700;
+            color: #a78bfa;
+            margin-bottom: 12px;
         }
 
-        .detail-row {
-            grid-template-columns: 1fr 70px 65px;
-            padding: 14px 5px;
+
+        .confidence {
+            font-size: 15px;
+            color: #d1d1d1;
         }
 
-        .detail-name,
-        .detail-value,
-        .detail-percentage {
-            font-size: 13px;
+
+        /* DISCLAIMER */
+
+        .disclaimer {
+            margin-top: 25px;
+            padding: 16px 20px;
+
+            background: rgba(120, 53, 15, 0.25);
+            border: 1px solid rgba(251, 146, 60, 0.35);
+
+            border-radius: 10px;
+
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+
+            text-align: left;
+
+            color: #fed7aa;
+            font-size: 14px;
+            line-height: 1.6;
         }
 
-        .action-buttons {
-            flex-direction: column;
+
+        .warning-icon {
+            font-size: 20px;
+            font-weight: bold;
         }
 
-        .btn {
+
+        /* ASSESSMENT SECTION */
+
+        .section-card {
+            background: rgba(20, 20, 25, 0.82);
+            border: 1px solid rgba(255, 255, 255, 0.10);
+
+            border-radius: 18px;
+
+            padding: 30px;
+
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.35);
+
+            margin-bottom: 25px;
+
+            backdrop-filter: blur(10px);
+        }
+
+
+        .section-title {
+            font-size: 22px;
+            font-weight: 700;
+            color: #ffffff;
+            margin-bottom: 7px;
             text-align: center;
         }
-    }
-</style>
-```
+
+
+        .section-subtitle {
+            font-size: 14px;
+            color: #b8b8b8;
+            margin-bottom: 5px;
+            text-align: center;
+        }
+
+
+        .section-description {
+            font-size: 14px;
+            color: #999999;
+            margin-bottom: 25px;
+            text-align: center;
+        }
+
+
+        /* ASSESSMENT DETAILS */
+
+        .detail-list {
+            display: flex;
+            flex-direction: column;
+
+            max-width: 850px;
+
+            margin: 0 auto;
+        }
+
+
+        .detail-row {
+            display: grid;
+
+            grid-template-columns: 1fr 120px 100px;
+
+            align-items: center;
+
+            padding: 15px 10px;
+
+            border-bottom: 1px solid rgba(255, 255, 255, 0.10);
+        }
+
+
+        .detail-row:last-child {
+            border-bottom: none;
+        }
+
+
+        .detail-name {
+            font-size: 14px;
+            color: #d1d1d1;
+            font-weight: 500;
+            text-align: left;
+        }
+
+
+        .detail-value {
+            font-size: 14px;
+            font-weight: 700;
+            color: #ffffff;
+            text-align: center;
+        }
+
+
+        .detail-percentage {
+            font-size: 14px;
+            font-weight: 700;
+            color: #a78bfa;
+            text-align: right;
+        }
+
+
+        /* BUTTONS */
+
+        .action-buttons {
+            display: flex;
+
+            justify-content: center;
+
+            gap: 15px;
+
+            margin: 35px 0;
+        }
+
+
+        .btn {
+            padding: 13px 24px;
+
+            border-radius: 9px;
+
+            text-decoration: none;
+
+            font-size: 14px;
+
+            font-weight: 600;
+
+            transition: 0.2s;
+        }
+
+
+        .btn-primary {
+            background: #4f46e5;
+            color: #ffffff;
+        }
+
+
+        .btn-primary:hover {
+            background: #4338ca;
+        }
+
+
+        .btn-secondary {
+            background: rgba(255, 255, 255, 0.08);
+
+            color: #ffffff;
+
+            border: 1px solid rgba(255, 255, 255, 0.15);
+        }
+
+
+        .btn-secondary:hover {
+            background: rgba(255, 255, 255, 0.14);
+        }
+
+
+        /* FOOTER */
+
+        .result-footer {
+            text-align: center;
+
+            padding: 25px 15px;
+
+            color: #999999;
+
+            font-size: 13px;
+
+            border-top: 1px solid rgba(255, 255, 255, 0.10);
+
+            background: rgba(5, 5, 5, 0.65);
+        }
+
+
+        .result-footer .footer-title {
+            color: #d1d1d1;
+
+            font-weight: 600;
+
+            margin-bottom: 6px;
+        }
+
+
+        /* MOBILE */
+
+        @media (max-width: 768px) {
+
+            .result-container {
+                width: 92%;
+                margin: 30px auto;
+            }
+
+
+            .page-heading h1 {
+                font-size: 27px;
+            }
+
+
+            .result-card {
+                padding: 25px 20px;
+            }
+
+
+            .section-card {
+                padding: 25px 20px;
+            }
+
+
+            .risk-level {
+                font-size: 31px;
+            }
+
+
+            .detail-row {
+                grid-template-columns: 1fr 70px 65px;
+
+                padding: 14px 5px;
+            }
+
+
+            .detail-name,
+            .detail-value,
+            .detail-percentage {
+                font-size: 13px;
+            }
+
+
+            .action-buttons {
+                flex-direction: column;
+            }
+
+
+            .btn {
+                text-align: center;
+            }
+
+        }
+
+    </style>
 
 </head>
 
-<body>
 
-```
-<!-- NAVBAR -->
-<nav class="navbar">
-
-    <div class="nav-links">
-        <a href="/">Home</a>
-        <a href="/">Assessment</a>
-        <a href="/dashboard">Dashboard</a>
-    </div>
-
-</nav>
+<body class="home-page result-page">
 
 
-<!-- MAIN CONTENT -->
-<main class="container">
+    <!-- =========================
+         BACKGROUND
+    ========================== -->
 
-    <!-- PAGE HEADING -->
-    <div class="page-heading">
+    <div class="background">
 
-        <div class="small-title">
-            AI-BASED ASSESSMENT
-        </div>
+        <div class="glow glow-purple"></div>
 
-        <h1>
-            Risk Assessment Result
-        </h1>
+        <div class="glow glow-blue"></div>
 
-        <p>
-            Estimated result generated by the machine learning model
-        </p>
+        <div class="glow glow-red"></div>
+
+        <div class="wave wave-one"></div>
+
+        <div class="wave wave-two"></div>
 
     </div>
 
 
-    <!-- RESULT -->
-    <div class="result-card">
+    <!-- =========================
+         NAVBAR
+    ========================== -->
 
-        <div class="ai-icon">
-            AI
+    <nav class="navbar">
+
+        <div class="nav-links">
+
+            <a href="/">
+                Home
+            </a>
+
+            <a href="/assessment">
+                Assessment
+            </a>
+
+            <a href="/dashboard">
+                Dashboard
+            </a>
+
         </div>
 
-        <div class="estimated">
-            Estimated Risk Level
-        </div>
-
-        <div class="risk-level">
-            {{ risk }}
-        </div>
-
-        <div class="confidence">
-            Model Confidence {{ confidence }}%
-        </div>
+    </nav>
 
 
-        <!-- DISCLAIMER -->
-        <div class="disclaimer">
+    <!-- =========================
+         MAIN CONTENT
+    ========================== -->
 
-            <div class="warning-icon">
-                !
+    <main class="result-container">
+
+
+        <!-- PAGE HEADING -->
+
+        <div class="page-heading">
+
+            <div class="small-title">
+                AI-BASED ASSESSMENT
             </div>
 
-            <div>
-                This result is an automated educational assessment.
-                It should not be treated as a definitive diagnosis,
-                legal determination, or professional assessment.
-            </div>
+            <h1>
+                Risk Assessment Result
+            </h1>
+
+            <p>
+                Estimated result generated by the machine learning model
+            </p>
 
         </div>
 
-    </div>
+
+        <!-- =========================
+             RESULT
+        ========================== -->
+
+        <div class="result-card">
 
 
-    <!-- ASSESSMENT DETAILS -->
-    <div class="section-card">
-
-        <div class="section-title">
-            ASSESSMENT DETAILS
-        </div>
-
-        <div class="section-subtitle">
-            Assessment Summary
-        </div>
-
-        <div class="section-description">
-            Information provided during the assessment.
-        </div>
-
-
-        <div class="detail-list">
-
-            <!-- THREATS -->
-            <div class="detail-row">
-
-                <span class="detail-name">
-                    Threats
-                </span>
-
-                <span class="detail-value">
-                    {{ summary['Threats']['value'] }}
-                </span>
-
-                <span class="detail-percentage">
-                    {% if summary['Threats']['value'] == 'Yes' %}
-                        {{ summary['Threats']['percentage'] }}%
-                    {% else %}
-                        0%
-                    {% endif %}
-                </span>
-
+            <div class="ai-icon">
+                AI
             </div>
 
 
-            <!-- PHYSICAL HARM -->
-            <div class="detail-row">
+            <div class="estimated">
+                Estimated Risk Level
+            </div>
 
-                <span class="detail-name">
-                    Physical Harm
-                </span>
 
-                <span class="detail-value">
-                    {{ summary['Physical Harm']['value'] }}
-                </span>
+            <div class="risk-level">
+                {{ risk }}
+            </div>
 
-                <span class="detail-percentage">
-                    {% if summary['Physical Harm']['value'] == 'Yes' %}
-                        {{ summary['Physical Harm']['percentage'] }}%
-                    {% else %}
-                        0%
-                    {% endif %}
-                </span>
+
+            <div class="confidence">
+                Model Confidence {{ confidence }}%
+            </div>
+
+
+            <!-- DISCLAIMER -->
+
+            <div class="disclaimer">
+
+                <div class="warning-icon">
+                    !
+                </div>
+
+                <div>
+
+                    This result is an automated educational assessment.
+                    It should not be treated as a definitive diagnosis,
+                    legal determination, or professional assessment.
+
+                </div>
 
             </div>
 
 
-            <!-- CONTROLLING BEHAVIOR -->
-            <div class="detail-row">
+        </div>
 
-                <span class="detail-name">
-                    Controlling Behavior
-                </span>
 
-                <span class="detail-value">
-                    {{ summary['Controlling Behavior']['value'] }}
-                </span>
+        <!-- =========================
+             ASSESSMENT DETAILS
+        ========================== -->
 
-                <span class="detail-percentage">
-                    {% if summary['Controlling Behavior']['value'] == 'Yes' %}
-                        {{ summary['Controlling Behavior']['percentage'] }}%
-                    {% else %}
-                        0%
-                    {% endif %}
-                </span>
+        <div class="section-card">
 
+
+            <div class="section-title">
+                ASSESSMENT DETAILS
             </div>
 
 
-            <!-- VERBAL ABUSE -->
-            <div class="detail-row">
-
-                <span class="detail-name">
-                    Verbal Abuse
-                </span>
-
-                <span class="detail-value">
-                    {{ summary['Verbal Abuse']['value'] }}
-                </span>
-
-                <span class="detail-percentage">
-                    {% if summary['Verbal Abuse']['value'] == 'Yes' %}
-                        {{ summary['Verbal Abuse']['percentage'] }}%
-                    {% else %}
-                        0%
-                    {% endif %}
-                </span>
-
+            <div class="section-subtitle">
+                Assessment Summary
             </div>
 
 
-            <!-- ISOLATION -->
-            <div class="detail-row">
-
-                <span class="detail-name">
-                    Isolation
-                </span>
-
-                <span class="detail-value">
-                    {{ summary['Isolation']['value'] }}
-                </span>
-
-                <span class="detail-percentage">
-                    {% if summary['Isolation']['value'] == 'Yes' %}
-                        {{ summary['Isolation']['percentage'] }}%
-                    {% else %}
-                        0%
-                    {% endif %}
-                </span>
-
+            <div class="section-description">
+                Information provided during the assessment.
             </div>
 
 
-            <!-- FINANCIAL CONTROL -->
-            <div class="detail-row">
+            <div class="detail-list">
 
-                <span class="detail-name">
-                    Financial Control
-                </span>
 
-                <span class="detail-value">
-                    {{ summary['Financial Control']['value'] }}
-                </span>
+                <!-- THREATS -->
 
-                <span class="detail-percentage">
-                    {% if summary['Financial Control']['value'] == 'Yes' %}
-                        {{ summary['Financial Control']['percentage'] }}%
-                    {% else %}
-                        0%
-                    {% endif %}
-                </span>
+                <div class="detail-row">
+
+                    <span class="detail-name">
+                        Threats
+                    </span>
+
+                    <span class="detail-value">
+                        {{ summary['Threats']['value'] }}
+                    </span>
+
+                    <span class="detail-percentage">
+
+                        {% if summary['Threats']['value'] == 'Yes' %}
+
+                            {{ summary['Threats']['percentage'] }}%
+
+                        {% else %}
+
+                            0%
+
+                        {% endif %}
+
+                    </span>
+
+                </div>
+
+
+                <!-- PHYSICAL HARM -->
+
+                <div class="detail-row">
+
+                    <span class="detail-name">
+                        Physical Harm
+                    </span>
+
+                    <span class="detail-value">
+                        {{ summary['Physical Harm']['value'] }}
+                    </span>
+
+                    <span class="detail-percentage">
+
+                        {% if summary['Physical Harm']['value'] == 'Yes' %}
+
+                            {{ summary['Physical Harm']['percentage'] }}%
+
+                        {% else %}
+
+                            0%
+
+                        {% endif %}
+
+                    </span>
+
+                </div>
+
+
+                <!-- CONTROLLING BEHAVIOR -->
+
+                <div class="detail-row">
+
+                    <span class="detail-name">
+                        Controlling Behavior
+                    </span>
+
+                    <span class="detail-value">
+                        {{ summary['Controlling Behavior']['value'] }}
+                    </span>
+
+                    <span class="detail-percentage">
+
+                        {% if summary['Controlling Behavior']['value'] == 'Yes' %}
+
+                            {{ summary['Controlling Behavior']['percentage'] }}%
+
+                        {% else %}
+
+                            0%
+
+                        {% endif %}
+
+                    </span>
+
+                </div>
+
+
+                <!-- VERBAL ABUSE -->
+
+                <div class="detail-row">
+
+                    <span class="detail-name">
+                        Verbal Abuse
+                    </span>
+
+                    <span class="detail-value">
+                        {{ summary['Verbal Abuse']['value'] }}
+                    </span>
+
+                    <span class="detail-percentage">
+
+                        {% if summary['Verbal Abuse']['value'] == 'Yes' %}
+
+                            {{ summary['Verbal Abuse']['percentage'] }}%
+
+                        {% else %}
+
+                            0%
+
+                        {% endif %}
+
+                    </span>
+
+                </div>
+
+
+                <!-- ISOLATION -->
+
+                <div class="detail-row">
+
+                    <span class="detail-name">
+                        Isolation
+                    </span>
+
+                    <span class="detail-value">
+                        {{ summary['Isolation']['value'] }}
+                    </span>
+
+                    <span class="detail-percentage">
+
+                        {% if summary['Isolation']['value'] == 'Yes' %}
+
+                            {{ summary['Isolation']['percentage'] }}%
+
+                        {% else %}
+
+                            0%
+
+                        {% endif %}
+
+                    </span>
+
+                </div>
+
+
+                <!-- FINANCIAL CONTROL -->
+
+                <div class="detail-row">
+
+                    <span class="detail-name">
+                        Financial Control
+                    </span>
+
+                    <span class="detail-value">
+                        {{ summary['Financial Control']['value'] }}
+                    </span>
+
+                    <span class="detail-percentage">
+
+                        {% if summary['Financial Control']['value'] == 'Yes' %}
+
+                            {{ summary['Financial Control']['percentage'] }}%
+
+                        {% else %}
+
+                            0%
+
+                        {% endif %}
+
+                    </span>
+
+                </div>
+
 
             </div>
+
 
         </div>
 
-    </div>
+
+        <!-- =========================
+             BUTTONS
+        ========================== -->
+
+        <div class="action-buttons">
 
 
-    <!-- BUTTONS -->
-    <div class="action-buttons">
+            <a href="/assessment"
+               class="btn btn-primary">
 
-        <a href="/" class="btn btn-primary">
-            ← New Assessment
-        </a>
+                ← New Assessment
 
-        <a href="/dashboard" class="btn btn-secondary">
-            ▦ View Dashboard
-        </a>
-
-    </div>
-
-</main>
+            </a>
 
 
-<!-- FOOTER -->
-<footer>
+            <a href="/dashboard"
+               class="btn btn-secondary">
 
-    <div class="footer-title">
-        AI-Based Domestic Violence Risk Identification System
-    </div>
+                ▦ View Dashboard
 
-    <div>
-        Educational & Awareness Purpose
-    </div>
+            </a>
 
-</footer>
-```
+
+        </div>
+
+
+    </main>
+
+
+    <!-- =========================
+         FOOTER
+    ========================== -->
+
+    <footer class="result-footer">
+
+
+        <div class="footer-title">
+
+            AI-Based Domestic Violence Risk Identification System
+
+        </div>
+
+
+        <div>
+
+            Educational &amp; Awareness Purpose
+
+        </div>
+
+
+    </footer>
+
 
 </body>
+
 </html>
