@@ -32,6 +32,8 @@
             width: 90%;
             max-width: 1100px;
             margin: 45px auto;
+            position: relative;
+            z-index: 10;
         }
 
 
@@ -241,56 +243,78 @@
         }
 
 
-        /* BUTTONS */
+        /* =====================================================
+           BUTTONS - FIXED
+        ===================================================== */
 
         .action-buttons {
-            display: flex;
+            display: flex !important;
+            justify-content: center !important;
+            align-items: center !important;
+            gap: 15px !important;
 
-            justify-content: center;
+            width: 100% !important;
 
-            gap: 15px;
+            margin: 35px 0 50px 0 !important;
 
-            margin: 35px 0;
+            position: relative !important;
+            z-index: 100 !important;
+
+            visibility: visible !important;
+            opacity: 1 !important;
         }
 
 
-        .btn {
-            padding: 13px 24px;
+        .action-buttons .btn {
+            display: inline-flex !important;
 
-            border-radius: 9px;
+            align-items: center !important;
+            justify-content: center !important;
 
-            text-decoration: none;
+            min-width: 170px !important;
 
-            font-size: 14px;
+            padding: 13px 24px !important;
 
-            font-weight: 600;
+            border-radius: 9px !important;
+
+            text-decoration: none !important;
+
+            font-size: 14px !important;
+
+            font-weight: 600 !important;
 
             transition: 0.2s;
+
+            visibility: visible !important;
+            opacity: 1 !important;
+
+            position: relative !important;
+            z-index: 101 !important;
         }
 
 
         .btn-primary {
-            background: #4f46e5;
-            color: #ffffff;
+            background: #4f46e5 !important;
+            color: #ffffff !important;
         }
 
 
         .btn-primary:hover {
-            background: #4338ca;
+            background: #4338ca !important;
         }
 
 
         .btn-secondary {
-            background: rgba(255, 255, 255, 0.08);
+            background: rgba(255, 255, 255, 0.08) !important;
 
-            color: #ffffff;
+            color: #ffffff !important;
 
-            border: 1px solid rgba(255, 255, 255, 0.15);
+            border: 1px solid rgba(255, 255, 255, 0.15) !important;
         }
 
 
         .btn-secondary:hover {
-            background: rgba(255, 255, 255, 0.14);
+            background: rgba(255, 255, 255, 0.14) !important;
         }
 
 
@@ -308,6 +332,9 @@
             border-top: 1px solid rgba(255, 255, 255, 0.10);
 
             background: rgba(5, 5, 5, 0.65);
+
+            position: relative;
+            z-index: 10;
         }
 
 
@@ -320,7 +347,9 @@
         }
 
 
-        /* MOBILE */
+        /* =====================================================
+           MOBILE
+        ===================================================== */
 
         @media (max-width: 768px) {
 
@@ -364,13 +393,25 @@
             }
 
 
+            /* MOBILE BUTTONS */
+
             .action-buttons {
-                flex-direction: column;
+                flex-direction: column !important;
+
+                gap: 12px !important;
+
+                margin-top: 30px !important;
+
+                margin-bottom: 45px !important;
             }
 
 
-            .btn {
-                text-align: center;
+            .action-buttons .btn {
+                width: 100% !important;
+
+                min-width: 0 !important;
+
+                text-align: center !important;
             }
 
         }
@@ -713,7 +754,6 @@
 
         <div class="action-buttons">
 
-
             <a href="/assessment"
                class="btn btn-primary">
 
@@ -725,10 +765,9 @@
             <a href="/dashboard"
                class="btn btn-secondary">
 
-                ▦ View Dashboard
+                Go to Dashboard
 
             </a>
-
 
         </div>
 
@@ -742,7 +781,6 @@
 
     <footer class="result-footer">
 
-
         <div class="footer-title">
 
             AI-Based Domestic Violence Risk Identification System
@@ -755,7 +793,6 @@
             Educational &amp; Awareness Purpose
 
         </div>
-
 
     </footer>
 
