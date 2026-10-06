@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Risk Assessment</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='style.css') }}">
+
+</head>
+
+
+<body class="home-page">
+
+
+    <div class="background">
+
+        <div class="glow glow-purple"></div>
+        <div class="glow glow-blue"></div>
+        <div class="glow glow-red"></div>
+
+        <div class="wave wave-one"></div>
+        <div class="wave wave-two"></div>
+
+    </div>
+
+
+    <!-- =========================
+         NAVIGATION
+    ========================== -->
+
+    <nav class="navbar">
+
+        <div class="nav-links">
+
+            <a href="/">
+                Home
+            </a>
+
+            <a href="/assessment" class="active">
+                Assessment
+            </a>
+
+            <a href="/dashboard">
+                Dashboard
+            </a>
+
+        </div>
+
+    </nav>
+
+
+
+    <main class="container">
+
+
+        <!-- =========================
+             ASSESSMENT SECTION
+        ========================== -->
+
+        <section class="assessment-section">
+
+
+            <div class="section-header">
+
+                <p class="dashboard-label">
+                    RISK ASSESSMENT
+                </p>
+
+
+                <h2>
+                    Complete the Assessment
+                </h2>
+
+
+                <p>
+                    Please select an answer for each indicator.
+                </p>
+
+            </div>
+
+
+
+            <div class="assessment-card">
+
+
+                <form action="/predict"
+                      method="POST">
+
+
+                    <div class="form-group">
+
+                        <label for="threats">
+                            Are there threats?
+                        </label>
+
+
+                        <select name="threats"
+                                id="threats"
+                                required>
+
+                            <option value="0">
+                                No
+                            </option>
+
+                            <option value="1">
+                                Yes
+                            </option>
+
+                        </select>
+
+                    </div>
+
+
+
+                    <div class="form-group">
+
+                        <label for="physical_harm">
+                            Is there physical harm?
+                        </label>
+
+
+                        <select name="physical_harm"
+                                id="physical_harm"
+                                required>
+
+                            <option value="0">
+                                No
+                            </option>
+
+                            <option value="1">
+                                Yes
+                            </option>
+
+                        </select>
+
+                    </div>
+
+
+
+                    <div class="form-group">
+
+                        <label for="controlling_behavior">
+                            Is there controlling behavior?
+                        </label>
+
+
+                        <select name="controlling_behavior"
+                                id="controlling_behavior"
+                                required>
+
+                            <option value="0">
+                                No
+                            </option>
+
+                            <option value="1">
+                                Yes
+                            </option>
+
+                        </select>
+
+                    </div>
+
+
+
+                    <div class="form-group">
+
+                        <label for="verbal_abuse">
+                            Is there verbal abuse?
+                        </label>
+
+
+                        <select name="verbal_abuse"
+                                id="verbal_abuse"
+                                required>
+
+                            <option value="0">
+                                No
+                            </option>
+
+                            <option value="1">
+                                Yes
+                            </option>
+
+                        </select>
+
+                    </div>
+
+
+
+                    <div class="form-group">
+
+                        <label for="isolation">
+                            Is there isolation?
+                        </label>
+
+
+                        <select name="isolation"
+                                id="isolation"
+                                required>
+
+                            <option value="0">
+                                No
+                            </option>
+
+                            <option value="1">
+                                Yes
+                            </option>
+
+                        </select>
+
+                    </div>
+
+
+
+                    <div class="form-group">
+
+                        <label for="financial_control">
+                            Is there financial control?
+                        </label>
+
+
+                        <select name="financial_control"
+                                id="financial_control"
+                                required>
+
+                            <option value="0">
+                                No
+                            </option>
+
+                            <option value="1">
+                                Yes
+                            </option>
+
+                        </select>
+
+                    </div>
+
+
+
+                    <button type="submit"
+                            class="assess-button">
+
+                        Assess Risk
+
+                        <span>→</span>
+
+                    </button>
+
+
+                </form>
+
+            </div>
+
+        </section>
+
+
+    </main>
+
+
+
+    <footer>
+
+        <p>
+            AI-Based Domestic Violence Risk Identification System
+        </p>
+
+
+        <p class="footer-small">
+            Educational &amp; Awareness Purpose
+        </p>
+
+    </footer>
+
+
+</body>
+
+</html>

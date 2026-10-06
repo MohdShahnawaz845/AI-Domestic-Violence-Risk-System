@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+
+<html lang="en">
+
+<head>
+
+```
+<meta charset="UTF-8">
+
+<meta name="viewport"
+      content="width=device-width, initial-scale=1.0">
+
+<title>Risk Assessment Dashboard</title>
+
+<link rel="stylesheet"
+      href="{{ url_for('static', filename='style.css') }}">
+```
+
+</head>
+
+<body class="home-page">
+
+```
+<!-- =========================
+     SAME HOME PAGE BACKGROUND
+========================== -->
+
+<div class="background">
+
+    <div class="glow glow-purple"></div>
+
+    <div class="glow glow-blue"></div>
+
+    <div class="glow glow-red"></div>
+
+    <div class="wave wave-one"></div>
+
+    <div class="wave wave-two"></div>
+
+</div>
+
+
+<!-- =========================
+     Navigation
+========================== -->
+
+<nav class="navbar">
+
+    <div class="nav-links">
+
+        <a href="/">
+            Home
+        </a>
+
+        <a href="/assessment">
+            Assessment
+        </a>
+
+        <a href="/dashboard"
+           class="active">
+            Dashboard
+        </a>
+
+    </div>
+
+</nav>
+
+
+<!-- =========================
+     Main Dashboard
+========================== -->
+
+<main class="dashboard-container">
+
+
+    <!-- Dashboard Header -->
+
+    <div class="dashboard-header">
+
+        <div>
+
+            <p class="dashboard-label">
+                AI RISK ANALYSIS
+            </p>
+
+            <h1>
+                Risk Assessment Dashboard
+            </h1>
+
+            <p class="dashboard-description">
+                Overview of risk assessments performed
+                during the current session.
+            </p>
+
+        </div>
+
+    </div>
+
+
+    <!-- =========================
+         Statistics
+    ========================== -->
+
+    <div class="dashboard-grid">
+
+
+        <!-- Total Assessments -->
+
+        <div class="stat-card">
+
+            <div class="stat-icon">
+                #
+            </div>
+
+            <div class="stat-content">
+
+                <p>
+                    Total Assessments
+                </p>
+
+                <h2>
+                    {{ total }}
+                </h2>
+
+            </div>
+
+        </div>
+
+
+        <!-- Low Risk -->
+
+        <div class="stat-card">
+
+            <div class="stat-icon">
+                L
+            </div>
+
+            <div class="stat-content">
+
+                <p>
+                    Low Risk
+                </p>
+
+                <h2>
+                    {{ low }}
+                </h2>
+
+            </div>
+
+        </div>
+
+
+        <!-- Medium Risk -->
+
+        <div class="stat-card">
+
+            <div class="stat-icon">
+                M
+            </div>
+
+            <div class="stat-content">
+
+                <p>
+                    Medium Risk
+                </p>
+
+                <h2>
+                    {{ medium }}
+                </h2>
+
+            </div>
+
+        </div>
+
+
+        <!-- High Risk -->
+
+        <div class="stat-card">
+
+            <div class="stat-icon">
+                H
+            </div>
+
+            <div class="stat-content">
+
+                <p>
+                    High Risk
+                </p>
+
+                <h2>
+                    {{ high }}
+                </h2>
+
+            </div>
+
+        </div>
+
+
+    </div>
+
+
+    <!-- =========================
+         Assessment History
+    ========================== -->
+
+    <section class="history-card">
+
+
+        <h2>
+            Assessment History
+        </h2>
+
+
+        {% if history %}
+
+        <div class="history-table">
+
+
+            <!-- Table Header -->
+
+            <div class="history-row history-header">
+
+                <span>
+                    #
+                </span>
+
+                <span>
+                    Risk Level
+                </span>
+
+                <span>
+                    Date &amp; Time
+                </span>
+
+            </div>
+
+
+            <!-- History Records -->
+
+            {% for item in history %}
+
+            <div class="history-row">
+
+
+                <span>
+                    {{ loop.index }}
+                </span>
+
+
+                <span>
+
+                    {% if item["risk_level"] == "Low Risk" %}
+
+                    <span class="risk-badge low-badge">
+                        Low Risk
+                    </span>
+
+                    {% elif item["risk_level"] == "Medium Risk" %}
+
+                    <span class="risk-badge medium-badge">
+                        Medium Risk
+                    </span>
+
+                    {% else %}
+
+                    <span class="risk-badge high-badge">
+                        High Risk
+                    </span>
+
+                    {% endif %}
+
+                </span>
+
+
+                <span>
+                    {{ item["assessment_time"] }}
+                </span>
+
+
+            </div>
+
+            {% endfor %}
+
+
+        </div>
+
+
+        {% else %}
+
+        <!-- Empty History -->
+
+        <div class="empty-history">
+
+            <p>
+                No assessments have been performed yet.
+            </p>
+
+        </div>
+
+        {% endif %}
+
+
+    </section>
+
+
+    <!-- =========================
+         Actions
+    ========================== -->
+
+    <div class="dashboard-actions">
+
+        <a href="/assessment"
+           class="primary-button">
+
+            + New Assessment
+
+        </a>
+
+    </div>
+
+
+</main>
+
+
+<!-- =========================
+     Footer
+========================== -->
+
+<footer class="footer">
+
+    <p>
+        AI-Based Domestic Violence Risk Identification System
+    </p>
+
+    <p>
+        Educational Machine Learning Project
+    </p>
+
+</footer>
+```
+
+</body>
+
+</html>
